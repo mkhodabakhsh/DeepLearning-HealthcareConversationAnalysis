@@ -230,7 +230,7 @@ def gen_test_comments(max_samples=999999999):
     # Pulls all data from the SPAADIA dataset, adds to our dataset
     current_dir = os.getcwd()
     for doc in os.listdir(current_dir + '/data/SPAADIA'):
-        with open(current_dir + '/data/SPAADIA' + doc, 'r') as handle:
+        with open(current_dir + '/data/SPAADIA/' + doc, 'r') as handle:
             conversations = BeautifulSoup(handle, features="xml")
             for imperative in conversations.findAll("imp"):
                     imperative = imperative.get_text().replace("\n", "")
