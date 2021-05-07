@@ -186,7 +186,7 @@ def gen_test_comments(max_samples=999999999):
     tagged_comments = {}
     current_dir = os.getcwd()
 
-    with open(current_dir + '/data\train-v2.0.json', 'r') as qa:
+    with open(current_dir + '/data/train-v2.0.json', 'r') as qa:
         parsed = json.load(qa)
 
     statement_count = 0
@@ -229,8 +229,8 @@ def gen_test_comments(max_samples=999999999):
 
     # Pulls all data from the SPAADIA dataset, adds to our dataset
     current_dir = os.getcwd()
-    for doc in os.listdir(current_dir + '/data\SPAADIA'):
-        with open(current_dir + '/data\SPAADIA' + doc, 'r') as handle:
+    for doc in os.listdir(current_dir + '/data/SPAADIA'):
+        with open(current_dir + '/data/SPAADIA' + doc, 'r') as handle:
             conversations = BeautifulSoup(handle, features="xml")
             for imperative in conversations.findAll("imp"):
                     imperative = imperative.get_text().replace("\n", "")
@@ -255,7 +255,7 @@ def gen_test_comments(max_samples=999999999):
 
     # Pulls all the data from the manually generated imparatives dataset
     current_dir = os.getcwd() 
-    with open(current_dir + '/data\imperatives.csv', 'r') as imperative_file:
+    with open(current_dir + '/data/imperatives.csv', 'r') as imperative_file:
         for row in imperative_file:
             imperative = row.replace("\n", "")
             if command_count < max_samples and imperative not in tagged_comments:
@@ -312,7 +312,7 @@ def gen_test_comments(max_samples=999999999):
     return test_comments, test_comments_category
 
 current_dir = os.getcwd() 
-def import_embedding(embedding_name=current_dir + '/data\default'):
+def import_embedding(embedding_name=current_dir + '/data/default'):
     '''
     Import word embedding to a giant json document
     '''
@@ -337,7 +337,7 @@ def import_embedding(embedding_name=current_dir + '/data\default'):
     
 current_dir = os.getcwd() 
 def export_embedding(word_encoding, category_encoding,
-                     embedding_name=current_dir + '/data\default'):
+                     embedding_name=current_dir + '/data/default'):
     '''
     Export word embedding to a giant json document
     '''
@@ -393,7 +393,7 @@ def encode_data(test_comments, test_comments_category,
     return x_train, x_test, y_train, y_test
 
 current_dir = os.getcwd() 
-def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data\default', pos_tags=False):
+def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data/default', pos_tags=False):
     '''
     Loads and encodes embeddings
     If data has already been encoded, uses the pre-encoded data
@@ -420,7 +420,7 @@ def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data\defaul
         x_train, x_test, y_train, y_test = encode_data(test_comments,
                                                        test_comments_category,
 		                                       data_split=data_split,
-                                                       embedding_name=current_dir + '/data\default',
+                                                       embedding_name=current_dir + '/data/default',
                                                        add_pos_tags_flag=pos_tags)
         for i in range(len(y_train)):
             encoded_comments.append([y_train[i], x_train[i]])
