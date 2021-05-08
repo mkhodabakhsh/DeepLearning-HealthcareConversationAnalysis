@@ -18,10 +18,10 @@ from reflection_function  import reflection_train_and_test
 from calculate_probs_function import calc_probs_func
 from generate_html_ import generate_html_function
 
-
+current_dir = os.getcwd()
 # User can load a different model if desired
-model_name      = "C:\\Users\Mohammad\Desktop\open_close_questions/models/2cnn"
-embedding_name  = "C:\\Users\Mohammad\Desktop\open_close_questions/data/default"
+model_name      = current_dir + '/models/2cnn'
+embedding_name  = current_dir + '/data/default'
 load_model_flag = False
 arguments       = sys.argv[1:len(sys.argv)]
 if len(arguments) == 1:
