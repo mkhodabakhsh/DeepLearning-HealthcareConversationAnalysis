@@ -46,7 +46,7 @@ def generate_otter_csv():
         Qstr_ = Qstr_ + str(trans_otter[t])   
 
     
-    nlp = spacy.load("en_core_web_lg", has_vector=True)
+    nlp = spacy.load("en_core_web_sm", has_vector=True)
     nlp.add_pipe(nlp.create_pipe('sentencizer'), first=True)
     doc = nlp(Qstr_)
 
