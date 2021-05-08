@@ -160,7 +160,7 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
                     write_blue(f, test_comments[t])
                     #print(string_id)
         elif index_aff[t]==1:
-            pass#write_green(f, test_comments[t])
+            write_green(f, test_comments[t])
         elif index_ref[t]==1:
             write_orange(f, test_comments[t])
         else:
