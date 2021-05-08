@@ -71,8 +71,11 @@ def generate_otter_csv():
         list_ = [test_comments[index_], 0, 0, 0, 0]
         df.loc[len(df.index)] = list_
 
-    path, file = os.path.split(user_input)
-
-    df.to_csv(path + '/sentence_list.csv')
+    path= ''
+    if len(os.path.split(user_input))>1:
+        path, file = os.path.split(user_input)
+    current_dir = os.getcwd()
+    print(current_dir + '/sentence_list.csv')
+    df.to_csv(current_dir + '/sentence_list.csv')
 
     return "CSV file is generated."

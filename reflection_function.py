@@ -60,6 +60,6 @@ def reflection_train_and_test(path_test):
     y_pred_ = list(svclassifier.predict(X_test_))
     
     print(confusion_matrix(y_test,y_pred_))
-    print(classification_report(y_test,y_pred_))
+    #print(classification_report(y_test,y_pred_))
 
     return confusion_matrix(y_test,y_pred_) , y_pred_

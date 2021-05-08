@@ -73,4 +73,4 @@ def calc_probs_func(csv_path):
         
     current_dir = os.getcwd()
     df.to_csv(current_dir + '/sentence_list_plus_labels_plus_probs.csv')
-    return 'CSV has been generated'
+    return 'Labels probability is calculated'

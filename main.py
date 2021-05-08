@@ -95,7 +95,6 @@ else:
     # evaluate loaded model on test data
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-#score = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=1)  ####>???????#####
 test_comments, test_comments_category = get_custom_test_comments()
 # 2: Statement (Declarative Sentence)    1: Question (Interrogative Sentence)
 # 0: Exclamation (Exclamatory Sentence)  3: Command (Imperative Sentence)
@@ -118,18 +117,12 @@ test_comments , test_comments_category=[],[]
 test_comments = Qlist_n
 test_comments_category =  ['statement']*num_
 
-#from termcolor import colored
-#def write_red(f, str_):    f.write('<p style="color:#ff0000">%s</p>' % str_)
-#def write_black(f, str_):  f.write('<p style="color:#000000">%s</p>' % str_)
-
 real , test =[],[]
 x_test, _, y_test, _ = encode_data(test_comments, test_comments_category, data_split=1.0,
                                    embedding_name=embedding_name, add_pos_tags_flag=pos_tags_flag)
 x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
 y_test = keras.utils.to_categorical(y_test, num_classes)
-#score = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=1)  ####  ?????? ######
-#print('Manual test')
-#print('Test accuracy:', score[1])
+
 
 predictions = model.predict(x_test, batch_size=batch_size, verbose=0)
 for i in range(0, len(predictions)):
@@ -139,12 +132,21 @@ for i in range(0, len(predictions)):
 
 
 ############## GET INPUT PATH ##########
+input_type = input("What is the type of your input file? Enter 1 for text file, 2 for CSV file. ")
+print('your input is',input_type)
+if int(input_type)==1:
+    from otter2csv import *
+    generate_otter_csv()
+elif int(input_type)==2:
+    user_input = input("Enter the name of your CSV file: ")
+else:
+    print('Your input is not acceptable.')
+
 current_dir = os.getcwd()
-user_input = input("Enter the name of your CSV file: ")
 path_input = current_dir + '/'+ user_input
 assert os.path.exists(path_input), "I did not find the file at, "+str(path_input)
 
-calc_probs_func(path_input)#'C:\\Users\Mohammad/Desktop/affirmation_reflection/sentence_list_plus_labels.csv')
+calc_probs_func(path_input)
 
 path_csv_test = current_dir + '/sentence_list_plus_labels_plus_probs.csv'
 

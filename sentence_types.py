@@ -303,11 +303,11 @@ def gen_test_comments(max_samples=999999999):
         test_comments.append(comment.rstrip())
         test_comments_category.append(category)
 
-    print("\n-------------------------")
-    print("command", command_count)
-    print("statement", statement_count)
-    print("question", question_count)
-    print("-------------------------\n")
+    #print("\n-------------------------")
+    #print("command", command_count)
+    #print("statement", statement_count)
+    #print("question", question_count)
+    #print("-------------------------\n")
         
     return test_comments, test_comments_category
 
@@ -373,22 +373,22 @@ def encode_data(test_comments, test_comments_category,
                                              category_encoding,
                                              add_pos_tags_flag=False)
 
-    print("Embedding Name", embedding_name)
+    #print("Embedding Name", embedding_name)
     if embedding_name:
         export_embedding(word_encoding, categories_encoding,
                          embedding_name=embedding_name)
     
     training_sample = int(len(encoded_comments) * data_split)
     
-    print(np.array(encoded_categories[0]))
+    #print(np.array(encoded_categories[0]))
 
     x_train = np.array(encoded_comments[:training_sample])
     x_test  = np.array(encoded_comments[training_sample:])
     y_train = np.array(encoded_categories[0][:training_sample])
     y_test  = np.array(encoded_categories[0][training_sample:])
 
-    print(len(x_train), 'train sequences')
-    print(len(x_test), 'test sequences')
+    #print(len(x_train), 'train sequences')
+    #print(len(x_test), 'test sequences')
 
     return x_train, x_test, y_train, y_test
 
@@ -452,8 +452,8 @@ def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data/defaul
     y_train = np.array(encoded_categories[:training_sample])
     y_test  = np.array(encoded_categories[training_sample:])
 
-    print(len(x_train), 'train sequences')
-    print(len(x_test), 'test sequences')
+    #print(len(x_train), 'train sequences')
+    #print(len(x_test), 'test sequences')
 
     return x_train, x_test, y_train, y_test
 

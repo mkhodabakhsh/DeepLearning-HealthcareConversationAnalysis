@@ -65,7 +65,6 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
 
     count_ceq , count_oeq = 0 ,0
     count_aff , count_ref = sum(index_aff) , sum(index_ref)
-    print('CHECKPOINT#1', index_ref)
     example_oeq, example_ceq, example_aff, example_ref = [],[],[],[]
     
     for ind_ , value_ in enumerate(index_aff):
@@ -159,7 +158,7 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
                     string_id = nlp.vocab.strings[match_id]  
                     span = doc[start:end]                    
                     write_blue(f, test_comments[t])
-                    print(string_id)
+                    #print(string_id)
         elif index_aff[t]==1:
             pass#write_green(f, test_comments[t])
         elif index_ref[t]==1:
