@@ -35,12 +35,12 @@ def reflection_train_and_test(path_test):
 
     y_ = data_tr_bal["reflect"].tolist()
     X_ = data_tr_bal.drop(['reflect'], axis=1)
-
+    try:X_=X_.drop(['Unnamed: 0'],axis=1)
+    except: pass
     svclassifier = SVC(kernel='rbf')
     svclassifier.fit(X_, y_)
 
     ##########################################################
-
     y_pred_tr = svclassifier.predict(X_)
 
     #print(confusion_matrix(y_,y_pred_tr))
@@ -57,6 +57,8 @@ def reflection_train_and_test(path_test):
 
     X_test  = X_test.reset_index(drop=True)
     X_test_ = X_test.drop(['reflect'], axis=1)
+    try:X_test_=X_test_.drop(['Unnamed: 0.1'],axis=1)
+    except: pass
     y_pred_ = list(svclassifier.predict(X_test_))
     
     print(confusion_matrix(y_test,y_pred_))

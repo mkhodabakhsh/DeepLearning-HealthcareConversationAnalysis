@@ -356,7 +356,7 @@ def export_embedding(word_encoding, category_encoding,
 def encode_data(test_comments, test_comments_category,
                 data_split=0.8, embedding_name=None, add_pos_tags_flag=False):
     
-    print("Encoding Data...")
+    #print("Encoding Data...")
     
     # Import prior mapping
     word_encoding, category_encoding = None, None
@@ -412,8 +412,8 @@ def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data/defaul
     # create a cache in the data folder of encoded data to pull quickly
     if not os.path.isfile(file_name):
 
-        print("No Cached Data Found...")
-        print("Loading Data...")
+        #print("No Cached Data Found...")
+        #print("Loading Data...")
         current_dir = os.getcwd() 
 
         test_comments, test_comments_category = gen_test_comments()        
@@ -432,7 +432,7 @@ def load_encoded_data(data_split=0.8, embedding_name=current_dir + '/data/defaul
                 encoding_file.write(str(row[0]) + "|||||" + str(row[1]))
                 encoding_file.write('\n')
     else:
-        print("Loading Data...")
+        pass#print("Loading Data...")
                 
     encoded_comments   = []
     encoded_categories = []

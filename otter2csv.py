@@ -10,7 +10,7 @@ import os
 
 def generate_otter_csv():
     
-    user_input = input("Enter the path of your file: ")
+    user_input = input("Enter the name of your text file (e.g. name.txt): ")
 
     assert os.path.exists(user_input), "I did not find the file at, "+str(user_input)
     

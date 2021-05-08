@@ -27,8 +27,8 @@ arguments       = sys.argv[1:len(sys.argv)]
 if len(arguments) == 1:
     model_name = arguments[0]
     load_model_flag = os.path.isfile(model_name+".json")
-print(model_name)
-print("Load Model?", (load_model_flag))
+#print(model_name)
+#print("Load Model?", (load_model_flag))
 
 # Model configuration
 maxlen = 300
@@ -50,12 +50,12 @@ x_train, x_test, y_train, y_test = load_encoded_data(data_split=0.8, embedding_n
 word_encoding, category_encoding = import_embedding(embedding_name)
 max_words   = len(word_encoding) + 1
 num_classes = np.max(y_train) + 1
-print(max_words, 'words')
-print(num_classes, 'classes')
-print('Pad sequences (samples x time)')
+#print(max_words, 'words')
+#print(num_classes, 'classes')
+#print('Pad sequences (samples x time)')
 x_train = sequence.pad_sequences(x_train, maxlen=maxlen)
 x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
-print('Convert class vector to binary class matrix (for use with categorical_crossentropy)')
+#print('Convert class vector to binary class matrix (for use with categorical_crossentropy)')
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 load_model_flag = True

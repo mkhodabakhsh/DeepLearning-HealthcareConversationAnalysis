@@ -404,7 +404,7 @@ def read_file(path, verbose=True):
     return results_list
 
 
-def save_data(path, data, verbose=True):
+def save_data(path, data, verbose=False):
     file = open(path, "wb")
     pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
@@ -412,7 +412,7 @@ def save_data(path, data, verbose=True):
         print("Saved data to file %s." % path)
 
 
-def load_data(path, verbose=True):
+def load_data(path, verbose=False):
     with open(path, 'rb') as file:
         saved_data = pickle.load(file)
         file.close()
