@@ -137,6 +137,7 @@ print('your input is',input_type)
 if int(input_type)==1:
     from otter2csv import *
     generate_otter_csv()
+    user_input = 'sentence_list.csv'
 elif int(input_type)==2:
     user_input = input("Enter the name of your CSV file: ")
 else:
