@@ -131,8 +131,9 @@ def generate_probabilistic_embeddings(data, frequency_data, metadata, verbose=Fa
         for j in range(len(utterances[i])):
             word = utterances[i][j]
             if word in freq_words:
-                utterance_embeddings[i][j] = probability_matrix[word_to_index[word]]
-
+                try:
+                    utterance_embeddings[i][j] = probability_matrix[word_to_index[word]]
+                except: print('Error: text is not in Otter format')
         tmp_label_embeddings.append(label_to_index[labels[i]])
 
     # Convert labels to one hot vectors

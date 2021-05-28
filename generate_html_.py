@@ -66,11 +66,14 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     count_ceq , count_oeq = 0 ,0
     count_aff , count_ref = sum(index_aff) , sum(index_ref)
     example_oeq, example_ceq, example_aff, example_ref = [],[],[],[]
-    
     for ind_ , value_ in enumerate(index_aff):
-        if value_==1: example_aff.append(test_comments[ind_]) 
+        try: 
+            if value_==1: example_aff.append(test_comments[ind_])
+        except: pass 
     for ind_ , value_ in enumerate(index_ref):
-        if value_==1: example_ref.append(test_comments[ind_]) 
+        try: 
+            if value_==1: example_ref.append(test_comments[ind_]) 
+        except: pass
     
     for t , i in enumerate(test_comments):  
         if question_flag[t]==1:
@@ -82,6 +85,8 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
                 example_ceq.append(test_comments[t])
             else:
                 index_oeq[t]=1
+                #print(i)
+
                 for match_id, start, end in matches:                
                     count_oeq+=1
                     example_oeq.append(test_comments[t])
@@ -146,26 +151,28 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     f.write('<h5 style="height:8px;border-width:0;color:rgba(255, 180, 41, 0.6);"background-color:rgba(255, 99, 71, 0.2);">REFLECTION</h5>')
     f.write('<hr style="height:15px;border-width:0;color:white;"background-color:white></h1>')
     f.write('<hr style="height:5px;border-width:0;color:white;"background-color:white></h1>')
-
+    print('checkpoint:' , len(question_flag) , len(index_aff)  , len(index_ref) )
     for t , i in enumerate(test_comments):  
-        if question_flag[t]==1:
-            doc = nlp(i)
-            matches = matcher(doc)
-            if matches == []:
-                write_red(f, test_comments[t])
+        try:
+            if question_flag[t]==1 or index_aff[t]==1 or index_ref[t]==1:
+                if question_flag[t]==1:
+                    doc = nlp(i)
+                    matches = matcher(doc)
+                    if matches == []:
+                        write_red(f, test_comments[t])
+                    else:
+                        for match_id, start, end in matches:
+                            string_id = nlp.vocab.strings[match_id]  
+                            span = doc[start:end]                    
+                        write_blue(f, test_comments[t])
+                            #print(string_id)
+                if index_ref[t]==1:
+                    write_orange(f, test_comments[t])
+                elif index_aff[t]==1:
+                    write_green(f, test_comments[t])
             else:
-                for match_id, start, end in matches:
-                    string_id = nlp.vocab.strings[match_id]  
-                    span = doc[start:end]                    
-                    write_blue(f, test_comments[t])
-                    #print(string_id)
-        elif index_aff[t]==1:
-            write_green(f, test_comments[t])
-        elif index_ref[t]==1:
-            write_orange(f, test_comments[t])
-        else:
-            write_black(f, test_comments[t])
-    
+                write_black(f, test_comments[t])
+        except: pass
     f.write('<hr style="height:5px;border-width:0;color:white;"background-color:white></h1>')
 
     def calc_perf(FP_,FN_,TP_):

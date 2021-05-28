@@ -132,14 +132,14 @@ for i in range(0, len(predictions)):
 
 
 ############## GET INPUT PATH ##########
-input_type = input("What is the type of your input file? Enter 1 for text file, 2 for CSV file. ")
+input_type = input("What is the type of the input file? Enter 1 for text file, 2 for CSV file. ")
 print('your input is',input_type)
 if int(input_type)==1:
     from otter2csv import *
     generate_otter_csv()
     user_input = 'sentence_list.csv'
 elif int(input_type)==2:
-    user_input = input("Enter the name of your CSV file: ")
+    user_input = input("Enter the name of the CSV file: ")
 else:
     print('Your input is not acceptable.')
 
