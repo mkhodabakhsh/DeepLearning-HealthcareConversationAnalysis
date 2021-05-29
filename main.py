@@ -124,7 +124,7 @@ real , test =[],[]
 x_test, _, y_test, _ = encode_data(test_comments, test_comments_category, data_split=1.0,
                                    embedding_name=embedding_name, add_pos_tags_flag=pos_tags_flag)
 x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
-y_test = keras.utils.to_categorical(y_test, num_classes)
+y_test = to_categorical(y_test, num_classes)
 
 
 predictions = model.predict(x_test, batch_size=batch_size, verbose=0)
