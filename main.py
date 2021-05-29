@@ -14,8 +14,6 @@ from keras.layers import Dense, Dropout, Activation, Embedding
 from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D
 from keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import to_categorical
-
-#from keras.utils import to_categorical
 from affirmation_function import affirmation_train_and_test
 from reflection_function  import reflection_train_and_test
 from calculate_probs_function import calc_probs_func

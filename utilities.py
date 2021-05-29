@@ -2,8 +2,9 @@ import itertools
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
