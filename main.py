@@ -12,7 +12,7 @@ from keras.models import Sequential, model_from_json
 from keras.layers import Dense, Dropout, Activation, Embedding
 from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D
 from keras.preprocessing.text import Tokenizer
-from tensorflow.keras.utils import to_categorical
+from keras.utils import to_categorical
 from affirmation_function import affirmation_train_and_test
 from reflection_function  import reflection_train_and_test
 from calculate_probs_function import calc_probs_func
@@ -56,8 +56,8 @@ num_classes = np.max(y_train) + 1
 x_train = sequence.pad_sequences(x_train, maxlen=maxlen)
 x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
 #print('Convert class vector to binary class matrix (for use with categorical_crossentropy)')
-y_train = keras.utils.to_categorical(y_train, num_classes)
-y_test = keras.utils.to_categorical(y_test, num_classes)
+y_train = to_categorical(y_train, num_classes)
+y_test = to_categorical(y_test, num_classes)
 load_model_flag = True
 if not load_model_flag:
     print('Constructing model!')
