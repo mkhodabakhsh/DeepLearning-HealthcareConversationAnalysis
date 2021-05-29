@@ -34,7 +34,7 @@ def generate_otter_csv():
     model_dir = 'models/'
     model_name = 'Probabilistic Model'
 
-    content_Otter = open(user_input, "r")
+    content_Otter = open(user_input, encoding = "ISO-8859-1") #, "r")
     time_Otter , trans_otter= [], []
     for index, str_ in enumerate(content_Otter):
         if index%3 == 1: trans_otter.append(str_)   
