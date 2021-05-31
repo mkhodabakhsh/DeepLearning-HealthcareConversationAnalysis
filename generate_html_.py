@@ -96,7 +96,7 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     
 
 
-    f = open('results/test_platform.html', 'w')
+    f = open('IO_files/test_platform.html', 'w')
     f.write('<html>')
     f.write('<h1 style="text-align:center">Color Labeled Transcript</h1>')
     f.write('<hr style="height:30px;border-width:0;color:white;"background-color:white></h1>')
@@ -151,7 +151,6 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     f.write('<h5 style="height:8px;border-width:0;color:rgba(255, 180, 41, 0.6);"background-color:rgba(255, 99, 71, 0.2);">REFLECTION</h5>')
     f.write('<hr style="height:15px;border-width:0;color:white;"background-color:white></h1>')
     f.write('<hr style="height:5px;border-width:0;color:white;"background-color:white></h1>')
-    print('checkpoint:' , len(question_flag) , len(index_aff)  , len(index_ref) )
     for t , i in enumerate(test_comments):  
         try:
             if question_flag[t]==1 or index_aff[t]==1 or index_ref[t]==1:

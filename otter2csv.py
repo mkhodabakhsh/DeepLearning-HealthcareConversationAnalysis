@@ -8,11 +8,11 @@ from otter2csv import *
 import sys
 import os
 
-def generate_otter_csv():
+def generate_otter_csv(owd):
     
-    user_input = input("Text to CSV Conversion------enter the name of the text file (e.g. name.txt): ")
+    user_input = input("Text to CSV Conversion------Enter the name of the text file (e.g. name.txt): ")
 
-    assert os.path.exists(user_input), "I did not find the file at, "+str(user_input)
+    assert os.path.exists(user_input), f"The text file doesn't exist at {str(user_input)}"
     
     prob_True_reflect, prob_True_affirm, prob_total = [0]*41, [0]*41, [0]*41
     counter_reflect, counter_affirm = 0 , 0
@@ -33,12 +33,10 @@ def generate_otter_csv():
     embeddings_dir = "embeddings/"
     model_dir = 'models/'
     model_name = 'Probabilistic Model'
-
-    content_Otter = open(user_input, encoding = "ISO-8859-1") #, "r")
+    content_Otter = open(owd+'/IO_files/'+user_input, encoding = "ISO-8859-1") #, "r")
     time_Otter , trans_otter= [], []
     for index, str_ in enumerate(content_Otter):
         if index%3 == 1: trans_otter.append(str_)   
-
     Qlist_n = []
     Qstr_ = ""
     for t in range(len(trans_otter)): 
@@ -72,9 +70,9 @@ def generate_otter_csv():
         df.loc[len(df.index)] = list_
     
     
-    current_dir = os.getcwd()
-    #path, file = os.path.split(user_input)
+    cwd = os.getcwd()
+    os.chdir(cwd+'/IO_files')
+    df.to_csv('sentence_list.csv')
 
-    df.to_csv(current_dir + '/sentence_list.csv')
 
     return "CSV file is generated."

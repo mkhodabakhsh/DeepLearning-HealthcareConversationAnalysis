@@ -7,11 +7,14 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 
-def reflection_train_and_test(path_test):
+def reflection_train_and_test(owd , path_test):
 
     balance_ratio = 3
-    current_dir = os.getcwd()
-    data = pd.read_csv(current_dir + '/dataframe_train_reflect.csv') 
+
+    os.chdir(owd)
+    cwd = os.getcwd()
+
+    data = pd.read_csv(cwd + '/dataframe_train_reflect.csv') 
 
     y = data["reflect"].tolist()
     X_train_raw = data.drop(['sentence', 'open_q', 'close_q', 'affirm'], axis=1)#, 'ny', 'qw', 'nn', '^2', 'qo', 'qh', '^h', 'ar', 'ng', 'br', 'no', 'qrr', 't3', 'oo_co_cc', 'aap_am', 't1', 'bd', '^g', 'qw^d', 'fa', 'ft'], axis=1)

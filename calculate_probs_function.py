@@ -30,8 +30,6 @@ def calc_probs_func(csv_path):
     meta_labels = [i[0] for i  in metadata['labels']]
     test_comments = df['sentence']
     batch_name = 'all'
-    resource_dir = 'data/'
-    embeddings_dir = "embeddings/"
     a_dict = {}
 
     for t in range(len(test_comments)):  
@@ -69,8 +67,9 @@ def calc_probs_func(csv_path):
     
     for i , label in enumerate(meta_labels):
             df[label] = test_scores[...,i]
-        
-        
-    current_dir = os.getcwd()
-    df.to_csv(current_dir + '/sentence_list_plus_labels_plus_probs.csv')
+
+    cwd = os.getcwd()    
+    os.chdir(cwd+'/IO_files')
+    
+    df.to_csv(cwd+'/IO_files' + '/sentence_list_plus_labels_plus_probs.csv')
     return 'Labels probability is calculated'

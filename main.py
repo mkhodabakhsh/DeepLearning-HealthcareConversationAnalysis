@@ -133,32 +133,34 @@ for i in range(0, len(predictions)):
 
 
 ############## GET INPUT PATH ##########
+owd = os.getcwd()
+
 input_type = input("What is the type of the input file? Enter 1 for text file, 2 for CSV file. ")
 print('your input is',input_type)
 if int(input_type)==1:
     from otter2csv import *
-    generate_otter_csv()
+    generate_otter_csv(owd)
     user_input = 'sentence_list.csv'
 elif int(input_type)==2:
     user_input = input("Enter the name of the CSV file: ")
 else:
     print('Your input is not acceptable.')
 
-current_dir = os.getcwd()
-path_input = current_dir + '/'+ user_input
-assert os.path.exists(path_input), "I did not find the file at, "+str(path_input)
+cwd = os.getcwd()
+save_dir = cwd 
+assert os.path.exists(save_dir + '/' + user_input), f"The CSV file doesn't exist at {str(save_dir)}"
 
-calc_probs_func(path_input)
+os.chdir(owd)
+cwd = os.getcwd()
 
-path_csv_test = current_dir + '/sentence_list_plus_labels_plus_probs.csv'
+calc_probs_func(save_dir + '/' + user_input)
+path_csv_test = save_dir + '/sentence_list_plus_labels_plus_probs.csv'
 
-
-out_aff = affirmation_train_and_test(path_csv_test)
-out_ref = reflection_train_and_test(path_csv_test)
+out_aff = affirmation_train_and_test(owd, path_csv_test)
+out_ref = reflection_train_and_test(owd, path_csv_test)
 index_aff,index_ref = out_aff[1],out_ref[1]
 
-current_dir = os.getcwd()
-data = pd.read_csv(current_dir + '/sentence_list_plus_labels_plus_probs.csv') 
+data = pd.read_csv(save_dir + '/sentence_list_plus_labels_plus_probs.csv') 
 trans_otter = data["sentence"].tolist()
 grnd_truth_oq,grnd_truth_cq = data["open_q"],data["close_q"]
 grnd_truth_aff,grnd_truth_ref = data["affirm"],data["reflect"]
@@ -166,3 +168,4 @@ grnd_truth_aff,grnd_truth_ref = data["affirm"],data["reflect"]
 
 question_flag = test
 generate_html_function(test_comments,question_flag,grnd_truth_oq,grnd_truth_cq,grnd_truth_aff,grnd_truth_ref,index_aff,index_ref)
+os.remove(save_dir + '/sentence_list_plus_labels_plus_probs.csv')
