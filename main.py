@@ -20,11 +20,13 @@ if int(input_type)==1:
     user_input = 'sentence_list.csv'
 elif int(input_type)==2:
     user_input = input("Enter the name of the CSV file: ")
+    cwd = os.getcwd()
+    os.chdir(cwd + '\IO_folder')
 else:
     print('Your input is not acceptable.')
 
 cwd = os.getcwd()
-save_dir = cwd
+save_dir = cwd 
 assert os.path.exists(save_dir + '/' + user_input), f"The CSV file doesn't exist at {str(save_dir)}"
 
 os.chdir(owd)
