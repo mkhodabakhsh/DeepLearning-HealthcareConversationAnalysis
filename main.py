@@ -36,7 +36,6 @@ test_comments , test = out_qcf[0],out_qcf[1]
 
 calc_probs_func(save_dir + '/' + user_input)
 path_csv_test = save_dir + '/sentence_list_plus_labels_plus_probs.csv'
-print('CECKPOINT' , test_comments[0:3])
 out_aff = affirmation_train_and_test(owd, path_csv_test,test_comments)
 out_ref = reflection_train_and_test(owd, path_csv_test)
 index_aff,token_existence,index_ref = out_aff[1],out_aff[2],out_ref[1]
