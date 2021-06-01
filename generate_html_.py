@@ -1,17 +1,16 @@
 #  Generate HTML output 
+import spacy 
+from spacy.lang.en import English
+from spacy.matcher import Matcher
+import random
+from tabulate import tabulate
+from termcolor import colored
+from sklearn.metrics import confusion_matrix
+from spacy.matcher import Matcher
 
-#initialize the Matcher with a vocab. The matcher must always share the same vocab with the documents it will operate on.
+def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth_ceq,
+                           grnd_truth_aff,grnd_truth_ref,index_aff,index_ref,token_existence):
 
-def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth_ceq,grnd_truth_aff,grnd_truth_ref,index_aff,index_ref):
-    import spacy 
-    from spacy.lang.en import English
-    from spacy.matcher import Matcher
-    import random
-    from tabulate import tabulate
-    from termcolor import colored
-    from sklearn.metrics import confusion_matrix
-    ###############################################
-    from spacy.matcher import Matcher
 
     #initialize the Matcher with a vocab. The matcher must always share the same vocab with the documents it will operate on.
     nlp = spacy.load("en_core_web_sm")
@@ -46,9 +45,13 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     pattern18 = [{"LOWER": "who"}, {}, {"POS": "AUX"}, {"POS": "PRON"}]
     pattern19 = [{"LOWER": "where"}, {}, {"POS": "AUX"}, {"POS": "PRON"}]
     pattern20 = [{"LOWER": "when"}, {}, {"POS": "AUX"}, {"POS": "PRON"}]
-    matcher.add("WH_Q", None, pattern1,  pattern2,  pattern3, pattern4,  pattern5,  pattern6, pattern7,  pattern8,  pattern9, pattern10,  pattern11,  pattern12,  pattern13, pattern14,  pattern15,  pattern16, pattern17,  pattern18,  pattern19, pattern20)
-    #####################################################################################
     
+    matcher.add("WH_Q", None, pattern1,  pattern2,  pattern3, pattern4,
+                pattern5,  pattern6, pattern7,  pattern8,  pattern9, pattern10,
+                pattern11,  pattern12,  pattern13, pattern14,  pattern15,  
+                pattern16, pattern17,  pattern18,  pattern19, pattern20)
+
+
     def write_red(f, str_):    f.write('<p style="color:#FF3333">%s</p>' % str_)
     def write_black(f, str_):  f.write('<p style="color:#000000">%s</p>' % str_)
     def write_blue(f, str_):  f.write('<p style="color:#0080ff">%s</p>' % str_)
@@ -60,43 +63,48 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     def write_table_text(f, str_):  f.write('<h4 style="text-align:center">%s</h4>' % str_)
     def write_header5(f, str_):  f.write('<h5 style="text-align:left;color:#0000ff">%s</h5>' % str_)
 
-    Count_=0
     index_oeq, index_ceq=[0]*len(question_flag),[0]*len(question_flag)
 
     count_ceq , count_oeq = 0 ,0
-    count_aff , count_ref = sum(index_aff) , sum(index_ref)
     example_oeq, example_ceq, example_aff, example_ref = [],[],[],[]
-    for ind_ , value_ in enumerate(index_aff):
-        try: 
-            if value_==1: example_aff.append(test_comments[ind_])
-        except: pass 
-    for ind_ , value_ in enumerate(index_ref):
-        try: 
-            if value_==1: example_ref.append(test_comments[ind_]) 
-        except: pass
     
     for t , i in enumerate(test_comments):  
         if question_flag[t]==1:
             doc = nlp(i)
             matches = matcher(doc)
+            #overwrite the q-detection on the aff/ref detection,
+            index_aff[t] , index_ref[t]= 0 , 0
             if matches == []:
                 index_ceq[t]=1
                 count_ceq+=1
                 example_ceq.append(test_comments[t])
             else:
-                index_oeq[t]=1
-                #print(i)
+                index_oeq[t]=1            
+                count_oeq+=1
+                example_oeq.append(test_comments[t])
+        else: pass
+    zipped = zip(range(len(index_aff)) , index_aff , index_ref)
 
-                for match_id, start, end in matches:                
-                    count_oeq+=1
-                    example_oeq.append(test_comments[t])
-                    Count_+=1
-        else:
-            pass
-    
+    for indx_ , pred_aff , pred_ref in zipped:
+        try: 
+            if pred_aff==1 and pred_ref==0: example_aff.append(test_comments[indx_])
+        except: pass
+        try: 
+            if pred_aff==0 and pred_ref==1 and (token_existence[indx_]<3): example_ref.append(test_comments[indx_])
+        except: pass
+        try: 
+            if (pred_aff==1 and pred_ref==1 and token_existence[indx_]>0) or (token_existence[indx_]>2): 
+                example_aff.append(test_comments[indx_])
+                index_ref[indx_]=0
+                index_aff[indx_]=1
+            if pred_aff==1 and pred_ref==1 and token_existence[indx_]<=0: 
+                example_ref.append(test_comments[indx_])
+                index_aff[indx_]=0
+        except: pass
 
+    count_aff , count_ref = sum(index_aff) , sum(index_ref)
 
-    f = open('IO_files/test_platform.html', 'w')
+    f = open('IO_folder/test_platform.html', 'w')
     f.write('<html>')
     f.write('<h1 style="text-align:center">Color Labeled Transcript</h1>')
     f.write('<hr style="height:30px;border-width:0;color:white;"background-color:white></h1>')
@@ -151,6 +159,8 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
     f.write('<h5 style="height:8px;border-width:0;color:rgba(255, 180, 41, 0.6);"background-color:rgba(255, 99, 71, 0.2);">REFLECTION</h5>')
     f.write('<hr style="height:15px;border-width:0;color:white;"background-color:white></h1>')
     f.write('<hr style="height:5px;border-width:0;color:white;"background-color:white></h1>')
+    
+    
     for t , i in enumerate(test_comments):  
         try:
             if question_flag[t]==1 or index_aff[t]==1 or index_ref[t]==1:
@@ -164,11 +174,10 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
                             string_id = nlp.vocab.strings[match_id]  
                             span = doc[start:end]                    
                         write_blue(f, test_comments[t])
-                            #print(string_id)
-                if index_ref[t]==1:
-                    write_orange(f, test_comments[t])
-                elif index_aff[t]==1:
+                elif index_aff[t]==1:# and  (index_ref[t]==0 or token_existence[t]>0):
                     write_green(f, test_comments[t])
+                elif index_ref[t]==1:
+                    write_orange(f, test_comments[t])
             else:
                 write_black(f, test_comments[t])
         except: pass

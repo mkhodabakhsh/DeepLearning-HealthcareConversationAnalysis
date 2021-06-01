@@ -69,7 +69,8 @@ def calc_probs_func(csv_path):
             df[label] = test_scores[...,i]
 
     cwd = os.getcwd()    
-    os.chdir(cwd+'/IO_files')
+    os.chdir(cwd+'/IO_folder')
     
-    df.to_csv(cwd+'/IO_files' + '/sentence_list_plus_labels_plus_probs.csv')
+    df.to_csv(cwd+'/IO_folder' + '/sentence_list_plus_labels_plus_probs.csv')
+    
     return 'Labels probability is calculated'

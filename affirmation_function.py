@@ -7,14 +7,14 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 
 
-def affirmation_train_and_test(owd , path_test):
+def affirmation_train_and_test(owd , path_test,test_comments):
 
     balance_ratio = 3
 
 
     os.chdir(owd)
     cwd = os.getcwd()
-    data = pd.read_csv(cwd + '/dataframe_train_affirm.csv') 
+    data = pd.read_csv(cwd + '/data/dataframe_train_affirm.csv') 
     y = data["affirm"].tolist()
     X_train_raw = data.drop(['sentence', 'open_q', 'close_q', 'reflect'], axis=1)#, 'ny', 'qw', 'nn', '^2', 'qo', 'qh', '^h', 'ar', 'ng', 'br', 'no', 'qrr', 't3', 'oo_co_cc', 'aap_am', 't1', 'bd', '^g', 'qw^d', 'fa', 'ft'], axis=1)
 
@@ -33,21 +33,17 @@ def affirmation_train_and_test(owd , path_test):
     data_tr_bal =data_tr_bal.reset_index(drop=True)
 
  
-    ####################################################
     y_ = data_tr_bal["affirm"].tolist()
     X_ = data_tr_bal.drop(['affirm'], axis=1)
     try:X_=X_.drop(['Unnamed: 0'],axis=1)
     except: pass
     svclassifier = SVC(kernel='rbf')
     svclassifier.fit(X_, y_)
-    ####################################################
+
 
     y_pred_tr = svclassifier.predict(X_)
-
     #print(confusion_matrix(y_,y_pred_tr))
     #print(classification_report(y_,y_pred_tr))
-
-    ####################################################
 
     data_test = pd.read_csv(path_test) 
     data_test=data_test.drop(['Unnamed: 0'],axis=1)
@@ -62,6 +58,17 @@ def affirmation_train_and_test(owd , path_test):
     y_pred_ = list(svclassifier.predict(X_test_))
         
     print(confusion_matrix(y_test,y_pred_))
-    #print(classification_report(y_test,y_pred_))
 
-    return confusion_matrix(y_test,y_pred_) , y_pred_
+    token_affirm = ['great' , 'good job' , 'positive' , 'done it' , 'good news' ,
+                    'sounds good' , 'thanks' , 'commitment' , 'willingness' ,
+                    'motivated' , 'improvements' , 'have demonstrated' , 'excellent' ,
+                    'perfect' , 'really good' , 'shows your' , 'you can' ,  'really' ,
+                    'you can' , 'Good news' , 'Great' , 'Perfect' , 'Excellent' , 'got it' ]
+
+    token_existence = []
+    for i in range(len(X_test.index)):
+        token_existence.append(sum([int(token_ in test_comments[i]) for token_ in token_affirm]) )   
+
+
+
+    return confusion_matrix(y_test,y_pred_) , y_pred_, token_existence
