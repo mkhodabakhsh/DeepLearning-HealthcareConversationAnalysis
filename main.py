@@ -21,7 +21,8 @@ if int(input_type)==1:
 elif int(input_type)==2:
     user_input = input("Enter the name of the CSV file: ")
     cwd = os.getcwd()
-    os.chdir(cwd + '\IO_folder')
+    os.chdir(cwd + '/IO_folder')
+
 else:
     print('Your input is not acceptable.')
 
