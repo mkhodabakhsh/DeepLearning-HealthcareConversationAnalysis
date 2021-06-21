@@ -66,7 +66,7 @@ def affirmation_train_and_test(owd , path_test,test_comments):
                     'you can' , 'Good news' , 'Great' , 'Perfect' , 'Excellent' , 'got it' ]
 
     token_existence = []
-    for i in range(len(X_test.index)):
+    for i in range(len(test_comments)):
         token_existence.append(sum([int(token_ in test_comments[i]) for token_ in token_affirm]) )   
 
 
