@@ -40,7 +40,7 @@ def affirmation_train_and_test(owd , path_test,test_comments):
     svclassifier = SVC(kernel='rbf')
     svclassifier.fit(X_, y_)
 
-
+    print('checkpoint#1',len(X_))
     y_pred_tr = svclassifier.predict(X_)
     #print(confusion_matrix(y_,y_pred_tr))
     #print(classification_report(y_,y_pred_tr))
@@ -55,6 +55,7 @@ def affirmation_train_and_test(owd , path_test,test_comments):
     X_test_ = X_test.drop(['affirm'], axis=1)
     try:X_test_=X_test_.drop(['Unnamed: 0.1'],axis=1)
     except: pass
+    print('checkpoit#2',len(X_test_.index),len(X_test.index))
     y_pred_ = list(svclassifier.predict(X_test_))
         
     print(confusion_matrix(y_test,y_pred_))

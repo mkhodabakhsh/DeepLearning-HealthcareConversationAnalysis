@@ -33,7 +33,7 @@ assert os.path.exists(save_dir + '/' + user_input), f"The CSV file doesn't exist
 os.chdir(owd)
 cwd = os.getcwd()
 
-out_qcf = question_classification_func(cwd)
+out_qcf = question_classification_func(cwd,user_input)
 
 test_comments , test = out_qcf[0],out_qcf[1]
 

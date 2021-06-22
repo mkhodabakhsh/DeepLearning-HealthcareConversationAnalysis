@@ -16,7 +16,7 @@ from keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import to_categorical
 
 
-def question_classification_func(cwd):
+def question_classification_func(cwd,user_input):
 
     # User can load a different model if desired
     model_name      = cwd + '/models/2cnn'
@@ -98,7 +98,7 @@ def question_classification_func(cwd):
     # 2: Statement (Declarative Sentence)    1: Question (Interrogative Sentence)
     # 0: Exclamation (Exclamatory Sentence)  3: Command (Imperative Sentence)
 
-    data = pd.read_csv(cwd + '/IO_folder/sentence_list.csv') 
+    data = pd.read_csv(cwd + '/IO_folder/'+user_input) 
     trans_otter = data["sentence"].tolist()
     grnd_truth_oq,grnd_truth_cq = data["open_q"],data["close_q"]
     grnd_truth_aff,grnd_truth_ref = data["affirm"],data["reflect"]
