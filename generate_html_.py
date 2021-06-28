@@ -9,7 +9,8 @@ from sklearn.metrics import confusion_matrix
 from spacy.matcher import Matcher
 
 def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth_ceq,
-                           grnd_truth_aff,grnd_truth_ref,index_aff,index_ref,token_existence):
+                           grnd_truth_aff,grnd_truth_ref,index_aff,index_ref,
+                           token_existence_aff,token_existence_ref):
 
 
     #initialize the Matcher with a vocab. The matcher must always share the same vocab with the documents it will operate on.
@@ -85,19 +86,31 @@ def generate_html_function(test_comments,question_flag,grnd_truth_oeq,grnd_truth
         else: pass
     zipped = zip(range(len(index_aff)) , index_aff , index_ref)
 
+
+
+    true_tokmin = 1
+    counter_true_tokmin = 2
     for indx_ , pred_aff , pred_ref in zipped:
+        if token_existence_aff[indx_]<0:
+            index_ref[indx_]=0
+            index_aff[indx_]=0
+        # else:
         try: 
-            if pred_aff==1 and pred_ref==0: example_aff.append(test_comments[indx_])
+            if pred_aff==1 and pred_ref==0 and token_existence_aff>=true_tokmin: example_aff.append(test_comments[indx_])  #??????
+            if pred_aff==1 and pred_ref==0 and token_existence_aff<true_tokmin: index_aff[indx_]=0
         except: pass
         try: 
-            if pred_aff==0 and pred_ref==1 and (token_existence[indx_]<3): example_ref.append(test_comments[indx_])
+            if pred_aff==0 and pred_ref==1 and token_existence_ref>=true_tokmin and (token_existence_aff[indx_]<counter_true_tokmin): 
+                example_ref.append(test_comments[indx_])
+            elif pred_aff==0 and pred_ref==1 and token_existence_ref<true_tokmin and (token_existence_aff[indx_]<counter_true_tokmin):
+                index_ref[indx_]=0
         except: pass
         try: 
-            if (pred_aff==1 and pred_ref==1 and token_existence[indx_]>0) or (token_existence[indx_]>2): 
+            if (pred_aff==1 and pred_ref==1 and token_existence_aff[indx_]>0) or (token_existence_aff[indx_]>=counter_true_tokmin): 
                 example_aff.append(test_comments[indx_])
                 index_ref[indx_]=0
                 index_aff[indx_]=1
-            if pred_aff==1 and pred_ref==1 and token_existence[indx_]<=0: 
+            if pred_aff==1 and pred_ref==1 and token_existence_aff[indx_]<=0: 
                 example_ref.append(test_comments[indx_])
                 index_aff[indx_]=0
         except: pass

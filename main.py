@@ -28,7 +28,7 @@ else:
 
 cwd = os.getcwd()
 save_dir = cwd 
-assert os.path.exists(save_dir + '/' + user_input), f"The CSV file doesn't exist at {str(save_dir)}"
+assert os.path.exists(os.path.join(save_dir , user_input) ), f"The CSV file doesn't exist at {str(save_dir)}"
 
 os.chdir(owd)
 cwd = os.getcwd()
@@ -37,18 +37,19 @@ out_qcf = question_classification_func(cwd,user_input)
 
 test_comments , test = out_qcf[0],out_qcf[1]
 
-calc_probs_func(save_dir + '/' + user_input)
-path_csv_test = save_dir + '/sentence_list_plus_labels_plus_probs.csv'
-out_aff = affirmation_train_and_test(owd, path_csv_test,test_comments)
-out_ref = reflection_train_and_test(owd, path_csv_test)
-index_aff,token_existence,index_ref = out_aff[1],out_aff[2],out_ref[1]
+message_ =calc_probs_func(os.path.join(save_dir , user_input))
+print(message_)
+path_csv_test = os.path.join(save_dir , 'sentence_list_plus_labels_plus_probs.csv')
+out_aff = affirmation_train_and_test(owd, path_csv_test, test_comments)
+out_ref = reflection_train_and_test(owd, path_csv_test, test_comments)
+index_aff,token_existence_aff,index_ref,token_existence_ref = out_aff[1],out_aff[2],out_ref[1],out_ref[2]
 
-data = pd.read_csv(save_dir + '/sentence_list_plus_labels_plus_probs.csv') 
+data = pd.read_csv(os.path.join(save_dir , 'sentence_list_plus_labels_plus_probs.csv') )
 trans_otter = data["sentence"].tolist()
 grnd_truth_oq,grnd_truth_cq = data["open_q"],data["close_q"]
 grnd_truth_aff,grnd_truth_ref = data["affirm"],data["reflect"]
 
 question_flag = test
 generate_html_function(test_comments,question_flag,grnd_truth_oq,grnd_truth_cq,
-                       grnd_truth_aff,grnd_truth_ref,index_aff,index_ref,token_existence)
-os.remove(save_dir + '/sentence_list_plus_labels_plus_probs.csv')
+                       grnd_truth_aff,grnd_truth_ref,index_aff,index_ref,token_existence_aff,token_existence_ref)
+os.remove(os.path.join(save_dir , 'sentence_list_plus_labels_plus_probs.csv') )
